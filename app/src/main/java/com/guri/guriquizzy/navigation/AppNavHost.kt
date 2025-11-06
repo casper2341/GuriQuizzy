@@ -1,71 +1,55 @@
 package com.guri.guriquizzy.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.guri.guriquizzy.ui.home.QuestionViewModel
+import com.guri.guriquizzy.ui.screens.FinalScoreScreen
+import com.guri.guriquizzy.ui.screens.HomeScreen
+import kotlinx.serialization.Serializable
+import com.guri.guriquizzy.ui.screens.SplashScreen
 
-data class Destination(val route: String)
+@Serializable
+object QuestionScreen
 
-val Home = Destination("home")
-val Details = Destination("details")
+@Serializable
+data class FinalScoreScreen(val finalScore: Int)
+
+@Serializable
+object SplashScreen
 
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: Destination = Home
+    viewModel: QuestionViewModel = viewModel()
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination.route,
+        startDestination = SplashScreen,
         modifier = modifier
     ) {
-        composable(Home.route) {
-            HomeScreen(onNavigateToDetails = {
-                navController.navigate(Details.route)
-            })
+        composable<SplashScreen> {
+            SplashScreen(navController = navController)
         }
-        composable(Details.route) {
-            DetailsScreen(onBack = { navController.popBackStack() })
+        composable<QuestionScreen> {
+            HomeScreen(navController = navController, vm = viewModel)
         }
-    }
-}
-
-@Composable
-private fun HomeScreen(onNavigateToDetails: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Home Screen")
-        Button(onClick = onNavigateToDetails) {
-            Text(text = "Go to Details")
+        composable<FinalScoreScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<FinalScoreScreen>()
+            FinalScoreScreen(
+                finalScore = args.finalScore,
+                viewModel = viewModel,
+                onNavigateToHomePage = {
+                    viewModel.resetQuiz()
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
-
-@Composable
-private fun DetailsScreen(onBack: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "Details Screen")
-        Button(onClick = onBack) {
-            Text(text = "Back")
-        }
-    }
-}
-
-
