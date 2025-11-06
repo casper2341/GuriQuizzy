@@ -61,3 +61,10 @@ A modern Android quiz application built with clean architecture principles, feat
 - **KAPT**: Kotlin Annotation Processing Tool (for Room)
 - **Android Gradle Plugin**: Build automation
 - **Compose Tooling**: UI preview and debugging
+
+#### Future Improvements
+- Adding MVI Architecture 
+- Replacing hardcoding Text to string files
+- Adding DI Libraries 
+- Adding Gesture Controls
+- Adding Animations
