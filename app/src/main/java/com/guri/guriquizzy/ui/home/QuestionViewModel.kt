@@ -8,12 +8,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class QuestionViewModel() : ViewModel() {
     private val _state = MutableStateFlow(QuestionUIState())
     val state: StateFlow<QuestionUIState> = _state
-
 
     private val getQuizQuestionsUseCase = AppModule.provideGetQuizQuestionsUseCase()
     private var autoRedirectJob: Job? = null
@@ -43,12 +43,14 @@ class QuestionViewModel() : ViewModel() {
             }
             val newMaxStreak = maxOf(currentState.maxStreak, newStreak)
 
-            _state.value = currentState.copy(
+            _state.update {
+                currentState.copy(
                 selectedOptionIndex = optionIndex,
                 score = newScore,
                 streak = newStreak,
                 maxStreak = newMaxStreak
-            )
+                )
+            }
 
             startAutoRedirect()
         }
@@ -68,13 +70,17 @@ class QuestionViewModel() : ViewModel() {
 
         val currentState = _state.value
         if (currentState.isLastQuestion) {
-            _state.value = currentState.copy(shouldNavigateToResult = true)
+            _state.update {
+                currentState.copy(shouldNavigateToResult = true)
+                }
         } else {
             val nextIndex = currentState.currentIndex + 1
-            _state.value = currentState.copy(
-                currentIndex = nextIndex,
-                selectedOptionIndex = null
-            )
+            _state.update {
+                currentState.copy(
+                    currentIndex = nextIndex,
+                    selectedOptionIndex = null
+                )
+            }
         }
     }
 
@@ -83,19 +89,22 @@ class QuestionViewModel() : ViewModel() {
 
         val currentState = _state.value
         if (currentState.isLastQuestion) {
-            _state.value = currentState.copy(
+            _state.update { currentState.copy(
                 shouldNavigateToResult = true,
                 skippedCount = currentState.skippedCount + 1,
                 streak = 0
             )
+                }
         } else {
             val nextIndex = currentState.currentIndex + 1
-            _state.value = currentState.copy(
-                currentIndex = nextIndex,
-                selectedOptionIndex = null,
-                skippedCount = currentState.skippedCount + 1,
-                streak = 0
-            )
+            _state.update {
+                currentState.copy(
+                    currentIndex = nextIndex,
+                    selectedOptionIndex = null,
+                    skippedCount = currentState.skippedCount + 1,
+                    streak = 0
+                )
+            }
         }
     }
 
