@@ -40,7 +40,7 @@ fun FinalScoreScreen(
     val skippedCount = uiState.skippedCount
 
     BackHandler {
-       onNavigateToHomePage()
+        onNavigateToHomePage()
     }
     Column(
         modifier = Modifier
@@ -130,80 +130,76 @@ fun FinalScoreScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            if (maxStreak > 0) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = Color(0xFFFFD700).copy(alpha = 0.2f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .border(
-                            width = 2.dp,
-                            color = Color(0xFFFFD700),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(16.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = Color(0xFFFFD700).copy(alpha = 0.2f),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .border(
+                        width = 2.dp,
+                        color = Color(0xFFFFD700),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .padding(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            Text(
-                                text = "🔥",
-                                style = MaterialTheme.typography.headlineSmall
-                            )
-                            Text(
-                                text = "Best Streak:",
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        }
                         Text(
-                            text = "You answered $maxStreak questions in one streak!",
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFAF2051)
+                            text = "🔥",
+                            style = MaterialTheme.typography.headlineSmall
+                        )
+                        Text(
+                            text = "Best Streak:",
+                            style = MaterialTheme.typography.bodyLarge
                         )
                     }
+                    Text(
+                        text = "You answered $maxStreak questions in one streak!",
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFAF2051)
+                    )
                 }
             }
 
-            if (skippedCount > 0) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(
-                            color = Color(0xFFFF9800).copy(alpha = 0.2f),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .border(
-                            width = 2.dp,
-                            color = Color(0xFFFF9800),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(16.dp)
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = Color(0xFFFF9800).copy(alpha = 0.2f),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .border(
+                        width = 2.dp,
+                        color = Color(0xFFFF9800),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    .padding(16.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Skipped Questions:",
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                        Text(
-                            text = "$skippedCount",
-                            style = MaterialTheme.typography.bodyLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFF9800)
-                        )
-                    }
+                    Text(
+                        text = "Skipped Questions:",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    Text(
+                        text = "$skippedCount",
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFF9800)
+                    )
                 }
             }
         }

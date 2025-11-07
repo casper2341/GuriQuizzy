@@ -1,6 +1,7 @@
 package com.guri.guriquizzy.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -27,7 +28,6 @@ object SplashScreen
 fun AppNavHost(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    viewModel: QuestionViewModel = viewModel()
 ) {
     NavHost(
         navController = navController,
@@ -37,11 +37,23 @@ fun AppNavHost(
         composable<SplashScreen> {
             SplashScreen(navController = navController)
         }
-        composable<QuestionScreen> {
-            HomeScreen(navController = navController, vm = viewModel)
+        composable<QuestionScreen> { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry<QuestionScreen>()
+            }
+            val viewModel: QuestionViewModel = viewModel(viewModelStoreOwner = parentEntry)
+            HomeScreen(
+                navController = navController,
+                vm = viewModel
+            )
         }
+
         composable<FinalScoreScreen> { backStackEntry ->
             val args = backStackEntry.toRoute<FinalScoreScreen>()
+            val parentEntry = remember(backStackEntry) {
+                navController.getBackStackEntry<QuestionScreen>()
+            }
+            val viewModel: QuestionViewModel = viewModel(viewModelStoreOwner = parentEntry)
             FinalScoreScreen(
                 finalScore = args.finalScore, // this could have been taken from viewmodel but taking like this to show args passing
                 viewModel = viewModel,
