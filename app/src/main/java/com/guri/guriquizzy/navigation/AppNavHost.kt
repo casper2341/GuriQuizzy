@@ -43,7 +43,7 @@ fun AppNavHost(
         composable<FinalScoreScreen> { backStackEntry ->
             val args = backStackEntry.toRoute<FinalScoreScreen>()
             FinalScoreScreen(
-                finalScore = args.finalScore,
+                finalScore = args.finalScore, // this could have been taken from viewmodel but taking like this to show args passing
                 viewModel = viewModel,
                 onNavigateToHomePage = {
                     viewModel.resetQuiz()
